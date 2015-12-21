@@ -5,7 +5,7 @@ Average Monoid
 
 
 Purpose
-====
+----
 
 This package provides a `Monoid` instance to compute the average. It is
 particularly useful when dealing with a stream of data with the only objective
@@ -14,10 +14,10 @@ keep all the data in memory.
 
 
 Build
-====
+----
 
 The recommanded way to build this package is with
-[stack](https://github/commercialhaskell/stack) even though it can build
+[stack](http://www.haskellstack.org) even though it can build
 with `cabal` too. Given `stack` is installed on your machine, run:
 
     stack setup
@@ -26,7 +26,7 @@ with `cabal` too. Given `stack` is installed on your machine, run:
 
 
 Example
-====
+----
 
     ghci> print $ getAverage $ average (2 :: Double) <> average (4 :: Double)
     3.0
