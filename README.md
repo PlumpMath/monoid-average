@@ -9,21 +9,25 @@ Purpose
 
 This package provides a `Monoid` instance to compute the average. It is
 particularly useful when dealing with a stream of data with the only objective
-to eventually compute the average as it is computed incrementaly with no need to
-keep all the data in memory.
+to eventually compute the average. The result can be computed incrementally with
+no need to keep all the stream in memory.
 
 
 Build
 ----
 
-The recommanded way to build this package is with
-[stack](http://www.haskellstack.org) even though it can build
-with `cabal` too. Given `stack` is installed on your machine, run:
+The preferred way to build this package is by using
+[stack](http://www.haskellstack.org). Given `stack` is installed on your
+machine, run:
 
     stack setup
     stack build
     stack test
 
+It is also possible to use cabal by running:
+
+    cabal install --only-dependencies --enable-tests
+    cabal configure --enable-tests && cabal build && cabal test
 
 Example
 ----
