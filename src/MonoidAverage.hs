@@ -16,5 +16,6 @@ instance Num a => M.Monoid (Average a) where
 average :: Fractional a => a -> Average a
 average = Average 1
 
-getAverage :: Fractional a => Average a -> a
-getAverage (Average n a) = a / fromIntegral n
+getAverage :: Fractional a => Average a -> Maybe a
+getAverage (Average n a) | n == 0 = Nothing
+                         | otherwise = Just $ a / fromIntegral n

@@ -20,7 +20,7 @@ propertiesFor t = [
           testProperty "Average result" $ propAverageResult t
         , testProperty "Monoid identity law" $ propIdentityLaw t
         , testProperty "Monoid associative law" $ propAssocLaw t
-   ]
+  ]
 
 class TestEq a where
     testEq :: a -> a -> Bool
@@ -35,23 +35,26 @@ averageFromList :: Fractional a => [a] -> Average a
 averageFromList = mconcat . map A.average
 
 averageEq :: (Fractional a, TestEq a) => Average a -> Average a -> Bool
-averageEq x y = getAverage x `testEq` getAverage y
+averageEq x y = maybeEq (getAverage x) (getAverage y)
 
-propAverageResult :: (Fractional a, TestEq a) => a -> [a] -> Property
-propAverageResult _ xs = not (null xs) ==>
-                         averageRef xs `testEq` averageMonoid xs
-    where averageRef xs' = sum xs' / fromIntegral (length xs')
+maybeEq :: (TestEq a) => Maybe a -> Maybe a -> Bool
+maybeEq Nothing Nothing = True
+maybeEq (Just x') (Just y') = x' `testEq` y'
+maybeEq _ _ = False
+
+propAverageResult :: (Fractional a, TestEq a) => a -> [a] -> Bool
+propAverageResult _ xs = averageRef xs `maybeEq` averageMonoid xs
+    where averageRef [] = Nothing
+          averageRef xs' = Just $ sum xs' / fromIntegral (length xs')
           averageMonoid = A.getAverage . averageFromList
 
-propIdentityLaw :: (Fractional a, TestEq a) => a -> [a] -> Property
-propIdentityLaw _ xs = not (null xs) ==>
-                     (avg <> mempty) `averageEq` avg
-                     && (mempty <> avg) `averageEq` avg
+propIdentityLaw :: (Fractional a, TestEq a) => a -> [a] -> Bool
+propIdentityLaw _ xs = (avg <> mempty) `averageEq` avg
+                       && (mempty <> avg) `averageEq` avg
     where avg = averageFromList xs
 
-propAssocLaw ::  (Fractional a, TestEq a) => a -> [a] -> [a] -> [a] -> Property
-propAssocLaw _ xs ys zs = not (null xs) || not (null ys) || not (null zs) ==>
-                          ((avg_xs <> avg_ys) <> avg_zs)
+propAssocLaw :: (Fractional a, TestEq a) => a -> [a] -> [a] -> [a] -> Bool
+propAssocLaw _ xs ys zs = ((avg_xs <> avg_ys) <> avg_zs)
                           `averageEq`
                           (avg_xs <> (avg_ys <> avg_zs))
     where avg_xs = averageFromList xs

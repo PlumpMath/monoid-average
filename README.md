@@ -33,6 +33,6 @@ Example
 ----
 
     ghci> print $ getAverage $ average (2 :: Double) <> average (4 :: Double)
-    3.0
+    Just 3.0
     ghci> getAverage $ mconcat $ map average ([3 % 2, 5 % 6] :: [Rational])
-    7 % 6
+    Just (7 % 6)
