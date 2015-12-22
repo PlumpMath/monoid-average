@@ -36,14 +36,12 @@ API
 Instanciate an `Average` `monoid` from a value:
 
 ```haskell
-ghci> :t average
 average :: Fractional a => a -> Average a
 ```
 
 Retrieve the average value:
 
 ```haskell
-ghci> :t getAverage
 getAverage :: Fractional a => Average a -> Maybe a
 ```
 
