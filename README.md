@@ -32,7 +32,11 @@ It is also possible to use cabal by running:
 Example
 ----
 
-    ghci> print $ getAverage $ average (2 :: Double) <> average (4 :: Double)
+    ghci> getAverage $ average (2 :: Double) <> average (4 :: Double)
     Just 3.0
+    ghci> getAverage $ (mempty :: Average Double)
+    Nothing
     ghci> getAverage $ mconcat $ map average ([3 % 2, 5 % 6] :: [Rational])
     Just (7 % 6)
+    ghci> getAverage $ mconcat $ map average ([] :: [Rational])
+    Nothing
