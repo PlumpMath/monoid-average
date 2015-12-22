@@ -29,14 +29,43 @@ It is also possible to use cabal by running:
     cabal install --only-dependencies --enable-tests
     cabal configure --enable-tests && cabal build && cabal test
 
-Example
+
+API
 ----
 
-    ghci> getAverage $ average (2 :: Double) <> average (4 :: Double)
-    Just 3.0
-    ghci> getAverage $ (mempty :: Average Double)
-    Nothing
-    ghci> getAverage $ mconcat $ map average ([3 % 2, 5 % 6] :: [Rational])
-    Just (7 % 6)
-    ghci> getAverage $ mconcat $ map average ([] :: [Rational])
-    Nothing
+Instanciate an `Average` `monoid` from a value:
+
+```haskell
+ghci> :t average
+average :: Fractional a => a -> Average a
+```
+
+Retrieve the average value:
+
+```haskell
+ghci> :t getAverage
+getAverage :: Fractional a => Average a -> Maybe a
+```
+
+Examples
+----
+
+```haskell
+ghci> getAverage $ average (2 :: Double) <> average (4 :: Double)
+Just 3.0
+```
+
+```haskell
+ghci> getAverage $ (mempty :: Average Double)
+Nothing
+```
+
+```haskell
+ghci> getAverage $ mconcat $ map average ([3 % 2, 5 % 6] :: [Rational])
+Just (7 % 6)
+```
+
+```haskell
+ghci> getAverage $ mconcat $ map average ([] :: [Rational])
+Nothing
+```
